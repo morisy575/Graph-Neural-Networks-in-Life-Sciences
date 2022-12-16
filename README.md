@@ -1,49 +1,55 @@
-# KDD 2022 Hands-on Tutorial: Graph Neural Networks in Life Sciences: Opportunities and Solutions
+# KDD 2022 ハンズオンチュートリアル: ライフサイエンスにおけるグラフニューラルネットワーク。可能性と解決策
 
-## Abstract
-Graphs (or networks) are ubiquitous representations in life sciences and medicine, from molecular interactions maps, signaling transduction pathways, to graphs of scientific knowledge , and patient-disease-intervention relationships derived from population studies and/or real-world evidences. Recent advance in graph machine learning (ML) approaches such as graph neural networks (GNNs) has transformed a diverse set of problems relying on biomedical networks that traditionally depend on descriptive topological data analyses. Small- and macro- molecules that were not modeled as graphs also saw a bloom in GNN-based algorithms improving the state-of-the-art performance for learning their properties. Comparing to graph ML applications from other domains, life sciences offer many unique problems and nuances ranging from graph construction to graph-level, and bi-graph-level supervision tasks.
+[notice]本チュートリアルは、KDD2022での発表に使用したチュートリアルのコンテンツを和訳したものになります。英語版オリジナルは[こちら](https://github.com/morisy575/Graph-Neural-Networks-in-Life-Sciences)を参照してください。
 
-The objective of this tutorial is twofold. First, it will provide a comprehensive overview of the types of biomedical graphs/networks, the underlying biological and medical problems, and the applications of graph ML algorithms for solving those problems. Second, it will showcase four concrete GNN solutions in life sciences with hands-on experience for the attendees. These hands-on sessions will cover: 1) training and fine-tuning GNN models for small-molecule property prediction on atomic graphs, 2) macro-molecule property and function prediction on residue graphs, 3) bi-graph based binding affinity prediction for protein-ligand pairs, and 4) organizing and generating new knowledge for drug discovery and repurposing with knowledge graphs. This tutorial will also instruct the attendees to develop in two extensions of the software library Deep Graph Library (DGL), including DGL-lifesci and DGL-KE, so that they could jumpstart their own graph ML journey to advance life science research and development.
+## 概要
+グラフは、分子間相互作用のマッピング・シグナル伝達経路・科学分野でのナレッジグラフ、集団研究やRWE(real world evidence)から得られた患者と病気の関係に至るまで、生命科学や医学においてユビキタスな表現です。グラフニューラルネットワークをはじめとするグラフベースの機械学習の進歩により、従来は記述的なトポロジーデータ解析に依存していた生物医学ネットワークに関連する様々な問題が変革されつつあります。また、これまでグラフとしてモデル化されていなかった低分子や巨大分子についても、GNNを用いたアルゴリズムが開花し、その特性を学習するための性能が向上しています。しかしライフサイエンス分野では、他の分野でのグラフMLアプリケーションと比較して、グラフ構築からグラフおよびバイグラフ(bigraph)レベルでの教師ありタスクまで、分野特有の多くのユニークな問題やニュアンスが存在します。
 
-## Outline
+このチュートリアルの目的は2つです。一つは、生物医学に関するグラフ・ネットワークの種類、生物学的・医学的問題、そしてそれらの問題を解決するためのグラフMLアルゴリズムの応用について包括的な概要を理解していただくことです。第二に、ライフサイエンスにおける4つの具体的なGNNソリューションを紹介し、参加者にハンズオンを体験していただくことです。
+これらのハンズオンセッションでは、以下を取り上げます。
+1. 原子グラフを用いた低分子物性予測のためのGNNモデルのTrainingとFine-tuning
+2. 残基グラフを用いた高分子物性・機能予測
+3. バイグラフに基づくタンパク質-リガンド結合親和性予測
+4. ナレッジグラフによるDrug discoveryおよびDrug repurposingのための新しい知識の整理と生成
+また、Deep Graph Library (DGL)の拡張版であるDGL-lifesciとDGL-KEでの開発も紹介し、ライフサイエンス研究・開発の発展に寄与するグラフMLの実現を目指します。
 
-The tutorial introduces to data science researchers and practitioners graph neural network (GNN) based approaches applied to various problems in biomedical sciences and healthcare.  The tutorial first provides an overview of the various opportunities in leveraging GNNs for small molecules, macromolecules and biomedical knowledge graphs. The four hands-on activities will provide the participants a diverse set of biomedical problems and in particular how to deploy a GNN-based library for these applications leading to biological phenotype prediction, interaction prediction, affinity prediction and drug discovery.
+## 概要
 
-The tutorial will be broken up into the following five sections:
+本チュートリアルでは、データサイエンス研究者や各種専門家のために、グラフニューラルネットワーク（GNN）ベースのアプローチを生物医学や医療における様々な問題に適用することを紹介します。 このチュートリアルでは、まず、低分子・高分子・生物医学ナレッジグラフのためにGNNを活用する様々な機会の概要を説明します。次に、4つのハンズオンにて、参加者に多様なライフサイエンスに関するタスク（生物学的なphenotype予測、相互作用予測、親和性予測、など創薬につながるこれらのアプリケーション）にGNNベースのライブラリを展開する方法を説明します。
 
-*Section 1: Overview of Graph ML in biomedical science*. This section describes different types of graphs commonly used in biomedical sciences and how graph-based machine learning approaches like GNNs can be leveraged. In particular, we will cover single-entity biomedical networks including gene regulatory network and protein-protein interaction networks, as well as multi-entity networks such as knowledge graphs of proteins, genes, diseases, symptoms, and drugs. This section also introduces graph representations for small and large molecules such as organic compounds and proteins, which can be modeled as independent graphs of atoms and residues, respectively. [section format: slides] 
+チュートリアルは、以下の5つのセクションに分かれています。
 
-
-*Section 2: Making sense of small molecules with GNNs*. This section demonstrates how to develop end-to-end graph-based ML pipeline for molecular property prediction. The pipeline first covers how to construct features from atom graphs for small organic compounds. Then, it will cover two use cases using DGL-lifesci command-line interface: 1) training a GNN for molecular property prediction from scratch, and 2) fine-tuning a pre-trained GNN for molecular property prediction. [section format: hands-on with Jupyter Notebook]
-
-
-*Section 3:* *Making sense of macro-molecules with GNNs*. This section demonstrates how to use GNNs to predict properties for macro-molecules including RNAs and proteins. We will cover two hands-on case studies: 1) Prediction of COVID-19 mRNA vaccine degradation with GCN, and 2) protein function prediction using an equivariant GNN on graphs of amino acid residues. [section format: hands-on with Jupyter Notebook]
+- *Section1： 生物医学におけるグラフMLの概要*。このセクションでは、生物医学でよく使われる様々な種類のグラフと、GNNのようなグラフベースの機械学習アプローチがどのように活用されるかを説明します。特に、遺伝子制御ネットワークやタンパク質相互作用ネットワークなどの単一エンティティのバイオメディカルネットワークと、タンパク質、遺伝子、病気、症状、薬などのナレッジグラフなどの複数エンティティのネットワークについて取り上げます。また、有機化合物やタンパク質などの大小分子のグラフ表現についても紹介し、それぞれ原子と残基の独立したグラフとしてモデル化できることを説明します。[形式：スライドによる説明] 。
+（[notice]各自`KDD2022_tutorial_GNN_in_lifesci.pdf`を参照してください。）
 
 
-*Section 4: Going beyond single graph, bi-graph based binding affinity prediction for protein-ligand pairs*. This section demonstrates a case study for making predictions between a pair of graphs. Protein-ligand binding affinity prediction is important for candidate drug screening during the early stage of drug discovery. We demonstrate how PotentialNet can be used for this task, as well as a novel molecular data anonymization procedure for protecting IP of molecular structures. [section format: hands-on with Jupyter Notebook]
+- *Section2：GNNを用いた低分子の理解*. このセクションでは、分子特性予測のためのend-to-endのグラフベースパイプラインを開発する方法を説明します。このパイプラインでは、まず、低分子有機化合物の原子グラフから特徴量を生成する方法を扱います。次に、DGL-lifesciのコマンドラインインタフェースを用いて、2つのユースケースをカバーします。1) 分子特性予測のためのGNNをゼロから学習する方法。2) 分子特性予測のために事前に学習したGNNをFine-tuningする方法。[セクション形式：Jupyter Notebookを用いたハンズオン】。］
 
 
-*Section 5: Organizing and generating new knowledge for drug discovery and repurposing with knowledge graphs (KGs).* This section showcases another application of graphs in life sciences by employing large-scale KGs to organize the information from diverse medical sources and make prediction on these KGs. KG is a directed heterogeneous multigraph whose node and relation types have domain-specific semantics. We will review three approaches to construct such medical KGs 1) mining medical documents and publications 2) processing and stitching together different KGs coming from various medical databases 3) converting relational databases to KGs.  We will show examples detailing how to construct such KGs. The resulting KGs store information efficiently and can be used for KG completion, drug repurposing, and question answering among other tasks. We will review notebooks showcasing how to use the KGs and graph ML to make predictions in these KGs. We also will explain common objectives used for KG completion. [section format: hands-on with Jupyter Notebook]
+- *Section3： GNNを用いたマクロ分子の理解*. このセクションでは、RNAやタンパク質を含むマクロ分子の特性を予測するためにGNNを使用する方法を紹介します。ここでは2つのケーススタディを紹介します。1) GCNを用いたCOVID-19 mRNAワクチンの分解予測、2) アミノ酸残基のグラフに対する同変性を備えた(equivariant)GNNを用いたタンパク質の機能予測。[セクション形式：Jupyter Notebookを使ったハンズオン】。］
 
-## Instructions for the hands-on sessions:
 
-This workshop requires a Jupter Notebook and related data. For the purposes of this tutorial, we will be using AWS to set up our environment.
+- *Section 4: 単一グラフではなく２つのグラフを同時に扱う、バイグラフベースのタンパク質-リガンドペアの結合親和性予測*。本セクションでは、2つのグラフの間で予測を行うケーススタディを紹介します。タンパク質とリガンドの結合親和性予測は、創薬の初期段階における候補薬のスクリーニングに重要です。この課題に対してPotentialNetがどのように利用できるか、また、分子構造のIPを保護するための新しい分子データの匿名化(data anonymization)の手順について説明します。[セクション形式：Jupyter Notebookを用いたハンズオン] 。
 
-Within the AWS environment, we will use
+- *Section 5: ナレッジグラフ（Knowledge Graph; KG） によるDrug DiscoveryおよびDrug Repurposingのためのナレッジの整理と生成* 本節では、生命科学におけるグラフのもう一つの応用として、大規模なKGを用いて多様な医学情報を整理し、そのKG上で予測することを紹介します。KGとは、ノードと関係のタイプがドメイン固有のセマンティクスを持つ有向異種マルチグラフです。今回は、このような医学的なKGを構築するための3つのアプローチについて説明します。1)医学文献のマイニング。 2) さまざまな医学データベースから得られる異なる複数のKGの処理とつなぎ合わせ。 3) リレーショナルデータベースを統合し、統合基幹業務システムを構築する方法。このようにして作成されたKGは、情報を効率的に格納し、KGの完成、薬の再製造、質問応答などに利用することができます。このような KG とグラフ ML を使って予測を行う方法を紹介するノートブックをレビューします。また、KG completionに用いられる一般的な方法についても説明します。[セクション形式：Jupyter Notebookを使ったハンズオン] 。
 
-- SageMaker notebook instance: An Amazon SageMaker notebook instance is a machine learning (ML) compute instance running the Jupyter Notebook App. SageMaker manages creating the instance and related resources. Use Jupyter notebooks in your notebook instance to prepare and process data, write code to train models, deploy models to SageMaker hosting, and test or validate your models.
-- Neptune database instance: Amazon Neptune is a fast, reliable, fully managed graph database service that makes it easy to build and run applications.
-- Neptune ML: Amazon Neptune ML is a new capability of Neptune that uses Graph Neural Networks (GNNs), a machine learning technique purpose-built for graphs, to make easy, fast, and more accurate predictions using graph data. With Neptune ML, you can improve the accuracy of most predictions for graphs by over 50% when compared to making predictions using non-graph methods.
-- IAM execution roles for SageMaker: An IAM role is an IAM identity that you can create in your AWS account that has specific permissions you can use with your SageMaker notebook.
-- S3 Bucket: Amazon Simple Storage Service (Amazon S3) is an object storage service offering industry-leading scalability, data availability, security, and performance.
-As part of this workshop, this AWS environment has already been set up for you via AWS Event Engine.
+## ハンズオンセッションの説明
 
-Head to https://dashboard.eventengine.run/login  and enter the event engine hash `7cc6-1b4e149c64-b8`. You will be asked to login with an email to receive the OTP to get an AWS Account. Follow the instructions on the website
+このワークショップでは、Jupter Notebookと関連するデータが必要です。このチュートリアルのために、AWS環境を構築します。
 
-1. Click on AWS Console
-2. On the window popup, select `Open Console`. This will open an AWS Console. The AWS Management Console is a browser-based GUI for Amazon Web Services (AWS). Through the console, a customer can manage their cloud computing, cloud storage and other resources running on the Amazon Web Services infrastructure.
-3. On the top right, ensure `N.Virginia (us-east-1)` is selected. If for any reason, you are logged into the different region, please switch to N.Virginia.
-4. On the top of the Console, type in `SageMaker` in the search bar
-5. On the left sidebar, head to `Notebook` > `Notebook instances`
-6. You will see an instance set up. Select `Open Jupyter` on the right side of the page under Actions. This will open a Jupyer notebook interface hosted on Amazon SageMaker
-7. Time to begin with your workshop!
+AWS環境内で使用する代表的なサービス・機能は以下になります。
+- SageMakerノートブックインスタンス： Amazon SageMakerノートブックインスタンスは、Jupyter Notebook App が動作する機械学習 (ML) 用のComputingインスタンスです。SageMakerは、インスタンスと関連するリソースの作成を管理します。ノートブックインスタンスで Jupyter ノートブックを使用して、データの準備と処理、モデルをトレーニングするコードの記述、SageMaker ホスティングへのモデルのデプロイ、およびモデルのテストまたは検証を実行します。
+- Neptune データベースインスタンス： Amazon Neptune は、高速で信頼性が高く、フルマネージドなグラフデータベースサービスです。アプリケーションの構築と実行を簡単に行うことができます。
+- Neptune ML: Amazon Neptune ML は Amazon Neptune の新機能で、グラフ専用の機械学習技術であるグラフニューラルネットワーク (GNN) を使用し、グラフデータを使用して簡単、高速、かつより正確な予測を行うことができます。Amazon Neptune MLを使用すると、グラフを使用しない方法で予測を行う場合と比較して、ほとんどのグラフの予測精度を50%以上向上させることができます。
+- SageMakerのIAM実行ロール。IAMロールは、AWSアカウントで作成できるIAMアイデンティティで、SageMakerノートブックで使用できる特定の権限を持つものです。
+- S3 バケット。Amazon Simple Storage Service (Amazon S3) は、業界をリードするスケーラビリティ、データの可用性、セキュリティ、およびパフォーマンスを提供するオブジェクトストレージサービスです。
+
+
+AWS環境の準備のステップは以下のようになります。
+1. AWS Management Consoleを開きます。AWS Management Consoleは、Amazon Web Services (AWS)のブラウザベースのGUIです。このコンソールを通じて、お客様はAmazon Web Servicesインフラストラクチャ上で動作するクラウドコンピューティング、クラウドストレージ、およびその他のリソースを管理することができます。
+2. 右上でお客様の実行する環境に合わせてリージョンを選択できます。例えば東京リージョンの場合は`Asia Pacific (Tokyo) ap-northeast-1` が選択してください。
+3. コンソールの上部にある検索バーに `SageMaker` と入力します。
+4. 左サイドバーで、`[ノートブック]` > `[ノートブックインスタンス]`に進みます。
+5. ノートブックインスタンスが存在しない場合は新たに作成しましょう。`[ノートブックインスタンスの作成]`から作成を行なってください。
+6. ノートブックインスタンスの作成ができたら、ページ右側のActionsにある `Open Jupyter` を選択します。Amazon SageMakerでホストされているJupyerノートブックのインターフェイスが表示されます。
+これでハンズオンの準備完了です。早速ライフサイエンス領域におけるグラフニューラルネットワークの学習を始めましょう！
